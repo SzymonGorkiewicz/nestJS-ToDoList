@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Task } from '../../tasks/entities/task.entity';
+import { IsNotEmpty } from 'class-validator';
 
 @Entity()
 export class List {
@@ -11,7 +12,7 @@ export class List {
     @Column()
     name:string;
 
-    @Column()
+    @Column({nullable:true})
     description:string;
 
     @ManyToOne(() => User, (user) => user.lists, { onDelete: 'CASCADE' })

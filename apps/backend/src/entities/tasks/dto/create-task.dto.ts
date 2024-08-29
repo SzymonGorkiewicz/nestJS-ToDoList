@@ -1,10 +1,17 @@
-import { List } from "src/entities/lists/entities/list.entity";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+
 
 export class CreateTaskDto {
     id: number;
+
+    @IsNotEmpty({ message: 'Title cannot be empty' })
     title: string;
-    description: string;
-    completed: boolean;
-    createdAt: Date;
-    list: List;
+
+    @IsOptional()
+    @IsString()
+    description?: string;
+
+    @IsNotEmpty({ message: 'List ID cannot be empty' })
+    @IsNumber()
+    list: number;
 }

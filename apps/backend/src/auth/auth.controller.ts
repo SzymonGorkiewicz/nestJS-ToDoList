@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/entities/users/dto/create-user.dto';
 
@@ -13,6 +13,7 @@ export class AuthController {
     }
 
     @Post('register')
+    @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
     register(@Body() userForm: CreateUserDto){
         return this.authService.register(userForm)
     }

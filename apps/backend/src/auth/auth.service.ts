@@ -14,7 +14,7 @@ export class AuthService {
     private userService:UsersService, 
     private jwtService: JwtService){}
 
-    async singIn(username:string, pass:string):Promise<{access_token:string}>{
+    async singIn(username:string, pass:string):Promise<{access_token:string, username:string, name:string, id:number, email:string}>{
         const user = await this.userService.findOne(username);
 
         if (!user || !(await bcrypt.compare(pass, user.password))) {
@@ -23,7 +23,7 @@ export class AuthService {
 
         const payload = {sub: user.id, username: user.username};
 
-        return {access_token: await this.jwtService.signAsync(payload)}
+        return {access_token: await this.jwtService.signAsync(payload), username:user.username, name:user.name, id:user.id, email:user.email}
     }
 
 
@@ -44,4 +44,10 @@ export class AuthService {
 
         return await this.userRepository.save(user);
       }
+
+    validateToken(token: string) {
+        return this.jwtService.verify(token, {
+            secret : process.env.JWT_SECRET_KEY
+        });
+    }
 }

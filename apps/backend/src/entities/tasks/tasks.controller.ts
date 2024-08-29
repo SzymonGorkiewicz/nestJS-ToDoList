@@ -1,20 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Query, UseGuards, Req, BadRequestException } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+
+@UseGuards(AuthGuard)
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  @Post('create')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false }))
+  create(@Req() request, @Body() createTaskDto: CreateTaskDto) {
+    const userID = request.decodedData.sub
+    return this.tasksService.create(createTaskDto, userID);
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@Query('listId') listId:string) {
+    return this.tasksService.findAll(+listId);
   }
 
   @Get(':id')
@@ -23,12 +28,14 @@ export class TasksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+  update(@Req() request,@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    const userID = request.decodedData.sub
+    return this.tasksService.update(+id, updateTaskDto, userID);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
+  remove(@Req() request, @Param('id') id: string) {
+    const userID = request.decodedData.sub
+    return this.tasksService.remove(+id, userID);
   }
 }

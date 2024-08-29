@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
 import { List } from './entities/list.entity';
@@ -13,12 +13,12 @@ export class ListsService {
     private userService: UsersService
     ){}
 
-  async create(createListDto: CreateListDto) : Promise<List> {
-    
-    const user = await this.userService.findOne(createListDto.user)
+  async create(createListDto: CreateListDto, userID:number) : Promise<List> {
+  
+    const user = await this.userService.findOne(userID)
 
     if (!user){
-      throw new ConflictException("Blad")
+      throw new ConflictException("User not found exception")
     }
 
     const list = new List();
@@ -31,19 +31,43 @@ export class ListsService {
 
   }
 
-  findAll() {
-    return `This action returns all lists`;
+  findOne(id:number){
+    return this.listRepository.findOneBy({id:id})
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} list`;
+  findAll(userID: number) {
+    return this.listRepository.find({where: {user: {id:userID}}});
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`;
+  async update(id: number, updateListDto: UpdateListDto, userID:number): Promise<List> {
+    const list = await this.listRepository.findOne({where: {id:id}, relations: ['user']})
+    
+    const updatedFields: Partial<List> = {};
+
+    if(!list || list.user.id !== userID){
+      throw new NotFoundException("No permission")
+    }
+
+    if (updateListDto.description){
+      updatedFields.description = updateListDto.description
+    }
+
+    if (updateListDto.name){
+      updatedFields.name = updateListDto.name
+    }
+    
+    await this.listRepository.update(id,updatedFields)
+
+    return this.listRepository.findOneBy({id:id});
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`;
+  async remove(id: number, userID:number) {
+    const list = await this.listRepository.findOne({where: {id:id}, relations:['user']})
+
+    if (!list || list.user.id !==userID){
+      throw new NotFoundException("No permission")
+    }
+
+    return await this.listRepository.delete(id);
   }
 }
