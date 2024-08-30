@@ -16,9 +16,9 @@ export class ListsController {
     return this.listsService.create(createListDto, userID);
   }
 
-  @Get()
-  findAll(@Query('userId') userId: string) {
-    return this.listsService.findAll(+userId);
+  @Get(':id')
+  findAll( @Param('id') id: string) {
+    return this.listsService.findAll(+id);
   }
 
   @Patch(':id')
