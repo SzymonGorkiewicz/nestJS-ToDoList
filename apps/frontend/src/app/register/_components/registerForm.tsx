@@ -35,10 +35,7 @@ export default function RegisterForm() {
             } else {
                 const result = await response.json();
                 console.log('Response from server:', result); // Debugging
-                
-                
-                localStorage.setItem('user', JSON.stringify(result));
-                push('/')
+                push('/login')
                 
             }
         } catch (error) {

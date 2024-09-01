@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, TextField, Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { TextField, Typography } from '@mui/material';
+import { StyledBox, SecondaryBox, StyledButton, SignInBox, StyledTextField } from './styling';
+
 
 export default function LoginForm() {
     const API_URL = "http://localhost:3000/auth/login";
@@ -55,63 +57,36 @@ export default function LoginForm() {
 
     return (
         <>
-            <Box sx={{
-                width: '100vw',
-                height: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
+            <StyledBox>
                 <form onSubmit={handleSubmit}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            width: '30vw',
-                            height: 'auto',
-                            border: 1,
-                            borderRadius: 5,
-                            gap: 2
-                        }}
-                    >
-                        <h1>Sign in</h1>
-                        <TextField
+                    <SecondaryBox>
+                        <SignInBox>
+                            <Typography variant='h4' sx={{letterSpacing:6}}>Sign in</Typography>
+                        </SignInBox>
+                        <StyledTextField
                             label="Username"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
                         />
-                        <TextField
+                        <StyledTextField
                             type="password"
                             label="Password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
                         />
-                        <Button
-                            variant="contained"
-                            type="submit"
-                            sx={{
-                                mb: 5,
-                                mt: 2,
-                                bgcolor: 'gray',
-                                '&:hover': {
-                                    bgcolor: 'darkgray'
-                                }
-                            }}
-                        >
-                            Log In
-                        </Button>
-                        {/* Conditional rendering for error message */}
+                        <StyledButton variant="contained" type="submit">
+                            Login
+                        </StyledButton>
                         {errorMessage && (
                             <Typography color="error" variant="body2">
                                 {errorMessage}
                             </Typography>
                         )}
-                    </Box>
+                    </SecondaryBox>
                 </form>
-            </Box>
+            </StyledBox>
         </>
     );
 }
