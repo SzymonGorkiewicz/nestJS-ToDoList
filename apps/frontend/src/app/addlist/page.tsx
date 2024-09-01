@@ -1,17 +1,17 @@
 'use client'
 import React from 'react';
-import Navbar from './_components/navbar';
-import withAuth from './_components/auth';
-import Lists from './_components/lists';
 import { ThemeProvider } from '@mui/material';
-import { customtheme } from './_components/theme';
+import { customtheme } from '../_components/theme';
+import withAuth from '../_components/auth'
+import ListForm from './_components/listForm';
+import Navbar from '../_components/navbar';
 
 const Page: React.FC = () => {
   return (
     <>
       <ThemeProvider theme={customtheme}>
         <Navbar></Navbar>
-        <Lists></Lists>
+        <ListForm></ListForm>
       </ThemeProvider>
     </>
   );

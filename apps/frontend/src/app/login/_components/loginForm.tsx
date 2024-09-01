@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Typography } from '@mui/material';
-import { StyledBox, SecondaryBox, StyledButton, SignInBox, StyledTextField } from './styling';
+import { StyledBox, SecondaryBox, StyledButton, SignInBox, StyledTextField, StyledTypography, StyledLink, StyledErrors } from './styling';
 
 
 export default function LoginForm() {
@@ -59,6 +59,7 @@ export default function LoginForm() {
         <>
             <StyledBox>
                 <form onSubmit={handleSubmit}>
+                    
                     <SecondaryBox>
                         <SignInBox>
                             <Typography variant='h4' sx={{letterSpacing:6}}>Sign in</Typography>
@@ -76,14 +77,15 @@ export default function LoginForm() {
                             value={formData.password}
                             onChange={handleChange}
                         />
+                        {errorMessage && (
+                            <StyledErrors variant="body1">
+                                {errorMessage}
+                            </StyledErrors>
+                        )}
                         <StyledButton variant="contained" type="submit">
                             Login
                         </StyledButton>
-                        {errorMessage && (
-                            <Typography color="error" variant="body2">
-                                {errorMessage}
-                            </Typography>
-                        )}
+                        <StyledTypography variant='body1'>Don't have an account? <StyledLink href='/register'>register here</StyledLink></StyledTypography>
                     </SecondaryBox>
                 </form>
             </StyledBox>

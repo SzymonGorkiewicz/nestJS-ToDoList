@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { LogoutButton, StyledBox, StyledLink, StyledTypography } from './styles/navbarStyles';
 
 const Navbar = () => {
     const {push} = useRouter()
@@ -11,28 +12,23 @@ const Navbar = () => {
         push('login')
     }
 
+
+    const handleOnClick = () =>{
+        push('/')
+    }
+
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{mb:2}}>
             <Toolbar>
-                <Container maxWidth="lg">
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <StyledBox>
+                    <StyledTypography variant="h6" onClick={handleOnClick} sx={{cursor: 'pointer'}}>
                         To-Do List
-                    </Typography>
-                    <Button color="inherit" >
-                        Home
-                    </Button>
-                    <Button color="inherit" >
-                        About
-                    </Button>
-                    <Button color="inherit" >
-                        Tasks
-                    </Button>
-                </Container>
-                <Button onClick={logout} variant='contained' sx={{
-                bgcolor: 'red'
-            }}>
-            Logout
-            </Button>
+                    </StyledTypography>
+                    <StyledLink href="/addlist">create list</StyledLink>
+                </StyledBox>
+                <LogoutButton onClick={logout} variant='contained'>
+                        Logout
+                </LogoutButton>
             </Toolbar>
         </AppBar>
     );

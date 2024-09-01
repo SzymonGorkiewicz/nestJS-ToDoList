@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { SecondaryBox, SignInBox, StyledBox, StyledButton, StyledErrors, StyledLink, StyledTextField, StyledTypography } from '@/app/login/_components/styling';
 
 export default function RegisterForm() {
     const API_URL = "http://localhost:3000/auth/register";
@@ -14,7 +15,7 @@ export default function RegisterForm() {
         name: ''
     });
 
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string[] | null>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -31,7 +32,8 @@ export default function RegisterForm() {
 
             if (!response.ok) {
                 const errorResponse = await response.json();
-                setErrorMessage(errorResponse.message || 'An error occurred');
+                console.log(errorResponse)
+                setErrorMessage(errorResponse.message || ['An error occurred']);
             } else {
                 const result = await response.json();
                 console.log('Response from server:', result); // Debugging
@@ -40,7 +42,7 @@ export default function RegisterForm() {
             }
         } catch (error) {
             console.error('Error during form submission:', error);
-            setErrorMessage('Failed to submit the form. Please try again.');
+            setErrorMessage(['Failed to submit the form. Please try again.']);
         }
     };
 
@@ -54,75 +56,54 @@ export default function RegisterForm() {
 
     return (
         <>
-            <Box sx={{
-                width: '100vw',
-                height: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
+            <StyledBox>
                 <form onSubmit={handleSubmit}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            width: '30vw',
-                            height: 'auto',
-                            border: 1,
-                            borderRadius: 5,
-                            gap: 2
-                        }}
-                    >
-                        <h1>Sign in</h1>
-                        <TextField
+                    <SecondaryBox>
+                        <SignInBox>
+                            <Typography variant='h4' sx={{letterSpacing:6}}>Sign up</Typography>
+                        </SignInBox>
+                        <StyledTextField
                             label="Name"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
                         />
-                        <TextField
+                        <StyledTextField
                             label="Email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
                         />
-                        <TextField
+                        <StyledTextField
                             label="Username"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
                         />
-                        <TextField
+                        <StyledTextField
                             type="password"
                             label="Password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
                         />
-                        <Button
-                            variant="contained"
-                            type="submit"
-                            sx={{
-                                mb: 5,
-                                mt: 2,
-                                bgcolor: 'gray',
-                                '&:hover': {
-                                    bgcolor: 'darkgray'
-                                }
-                            }}
-                        >
-                            register
-                        </Button>
-                        {/* Conditional rendering for error message */}
-                        {errorMessage && (
-                            <Typography color="error" variant="body2">
-                                {errorMessage}
-                            </Typography>
+                        {errorMessage && errorMessage.length > 0 &&(
+                            <StyledErrors variant='body2'>
+                                <ul>
+                                {errorMessage.map((msg,index) =>
+                                    <li key={index}>{msg}</li>
+                                )}
+                                </ul>
+                            </StyledErrors>
+                           
                         )}
-                    </Box>
+                        <StyledButton variant="contained" type="submit">
+                            register
+                        </StyledButton>
+                        <StyledTypography variant='body1'>Already have an account? <StyledLink href='/login'>sign in</StyledLink></StyledTypography>
+                    </SecondaryBox>
                 </form>
-            </Box>
+            </StyledBox>
         </>
     );
 }

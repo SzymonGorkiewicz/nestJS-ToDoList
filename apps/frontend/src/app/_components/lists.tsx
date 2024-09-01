@@ -59,11 +59,6 @@ const Lists: React.FC = () => {
 
   return (
     <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Lists</Typography>
-        </Toolbar>
-      </AppBar>
       <Typography variant="h4" gutterBottom>
         User's Lists
       </Typography>
