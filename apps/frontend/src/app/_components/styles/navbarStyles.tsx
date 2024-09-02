@@ -25,6 +25,7 @@ export const StyledLink = styled(Link)(({theme}) =>({
     fontWeight: "600",
     alignSelf: 'center',
     marginLeft: 20,
+    cursor: 'pointer'
    
 }))
 

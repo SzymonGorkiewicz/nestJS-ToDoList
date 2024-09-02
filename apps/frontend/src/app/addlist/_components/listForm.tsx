@@ -1,29 +1,33 @@
-'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { StyledLink } from '@/app/_components/styles/navbarStyles';
 
 
+interface ListFormProps {
+    onListCreated: () => void; // Prop type definition for the callback
+}
+  
 
-
-export default function ListForm() {
+export default function ListForm({ onListCreated }: ListFormProps) {
     const API_URL = "http://localhost:3000/lists/create";
-    const {push} = useRouter()
+    const { push } = useRouter();
     const [formData, setFormData] = useState({
         name: '',
         description: ''
     });
-
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+
+    
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setErrorMessage(null); 
+        setErrorMessage(null);
 
         try {
-            const user = localStorage.getItem('user')
+            const user = localStorage.getItem('user');
             const parsedUser = user ? JSON.parse(user) : null;
-            
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -38,10 +42,13 @@ export default function ListForm() {
                 setErrorMessage(errorResponse.message || 'An error occurred');
             } else {
                 const result = await response.json();
-                console.log('Response from server:', result); 
-                
-                push('/')
-                
+                console.log('Response from server:', result);
+                onListCreated()
+                setOpen(false);
+                setFormData({
+                    name: '',
+                    description: ''
+                });
             }
         } catch (error) {
             console.error('Error during form submission:', error);
@@ -57,23 +64,47 @@ export default function ListForm() {
         }));
     };
 
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    onChange={handleChange}
-                    name= 'name'
-                    value={formData.name}
-                    placeholder='name'
-                />
-                <TextField
-                    onChange={handleChange}
-                    name= 'description'
-                    value={formData.description}
-                    placeholder='description'
-                />
-                <Button variant='contained' type="submit">Create</Button>
-            </form>
+            <StyledLink onClick={handleOpen}>
+                Create List
+            </StyledLink>
+
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Create List</DialogTitle>
+                <DialogContent>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            onChange={handleChange}
+                            name='name'
+                            value={formData.name}
+                            placeholder='Name'
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            onChange={handleChange}
+                            name='description'
+                            value={formData.description}
+                            placeholder='Description'
+                            fullWidth
+                            margin="normal"
+                        />
+                        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                        <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                                Cancel
+                            </Button>
+                            <Button variant='contained' type="submit" color="primary">
+                                Create
+                            </Button>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }

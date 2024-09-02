@@ -3,7 +3,8 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { LogoutButton, StyledBox, StyledLink, StyledTypography } from './styles/navbarStyles';
+import { LogoutButton, StyledBox, StyledTypography } from './styles/navbarStyles';
+
 
 const Navbar = () => {
     const {push} = useRouter()
@@ -24,7 +25,6 @@ const Navbar = () => {
                     <StyledTypography variant="h6" onClick={handleOnClick} sx={{cursor: 'pointer'}}>
                         To-Do List
                     </StyledTypography>
-                    <StyledLink href="/addlist">create list</StyledLink>
                 </StyledBox>
                 <LogoutButton onClick={logout} variant='contained'>
                         Logout
