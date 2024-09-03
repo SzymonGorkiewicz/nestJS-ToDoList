@@ -17,15 +17,17 @@ export class TasksController {
     return this.tasksService.create(createTaskDto, userID);
   }
 
-  @Get()
-  findAll(@Query('listId') listId:string) {
+  @Get(':id')
+  findAll(@Param('id') listId:string) {
     return this.tasksService.findAll(+listId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
+  @Get('get/:id')
+  findOne(@Param('id') listId:string) {
+    console.log("wchodzi")
+    return this.tasksService.findOne(+listId);
   }
+
 
   @Patch(':id')
   update(@Req() request,@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
