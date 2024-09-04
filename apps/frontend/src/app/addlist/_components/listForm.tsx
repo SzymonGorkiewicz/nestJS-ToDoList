@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { AddIconStyled, IconBox } from './styling';
 
@@ -10,7 +9,6 @@ interface ListFormProps {
 
 export default function ListForm({ onListCreated }: ListFormProps) {
     const API_URL = "http://localhost:3000/lists/create";
-    const { push } = useRouter();
     const [formData, setFormData] = useState({
         name: '',
         description: ''

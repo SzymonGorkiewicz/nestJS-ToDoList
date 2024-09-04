@@ -1,6 +1,7 @@
 'use client'
 import { styled, Box } from "@mui/material"
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 
 export const ListBox = styled(Box)(({theme}) =>({
     display: 'flex',
@@ -48,6 +49,19 @@ export const TaskBox = styled(Box)(({theme}) =>({
 export const StyledIcon = styled(AddBoxRoundedIcon)(({theme}) =>({
     fontSize: '200px',
     color: theme.palette.primary.light,
+
+}))
+
+
+export const BackIcon = styled(ArrowBackIosNewRoundedIcon)(({theme}) =>({
+    marginLeft:50,
+    fontSize: '50px',
+    transition: 'transform 0.2s ease',
+    color: theme.palette.primary.dark,
+    '&:hover':{
+        cursor: 'pointer',
+        transform: 'scale(1.2)'
+    }
 
 }))
 

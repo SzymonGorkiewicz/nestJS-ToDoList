@@ -1,13 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm';
 import { List } from '../../lists/entities/list.entity';
 
 
 @Entity()
+@Unique(['title', 'list'])
 export class Task {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({unique:true})
+  @Column()
   title: string;
 
   @Column({ nullable: true })

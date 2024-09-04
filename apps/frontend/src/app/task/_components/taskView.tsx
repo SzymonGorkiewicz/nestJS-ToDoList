@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { BackIcon } from '@/app/list/_components/styles';
 
 interface List{
     id:number
@@ -109,7 +110,7 @@ export default function TaskView(){
     if (!task) return <div>Loading...</div>;
 
     return(
-        <>  
+        <>  <BackIcon onClick={()=>push(`/list/${task.list.id}`)}></BackIcon>
             <Button variant='contained' onClick={()=>setOpenEditDialog(true)}>edit</Button>
             <Button variant='contained' onClick={()=>setOpenDeleteDialog(true)}>delete</Button>
             <div>

@@ -2,7 +2,8 @@ import Navbar from "@/app/_components/navbar"
 import { Button, Box, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { useRouter, useParams } from "next/navigation"
 import React, { useEffect, useState } from "react";
-import { ButtonBox, DetailsContainer, ListBox,  StyledIcon, Task, TaskBox } from "./styles";
+import { BackIcon, ButtonBox, DetailsContainer, ListBox,  StyledIcon, Task, TaskBox } from "./styles";
+
 
 interface List {
     id: number;
@@ -143,7 +144,9 @@ export default function ListViewForm(){
     return(
         <>
             <Navbar />
+            <BackIcon onClick={()=>router.push('/')}></BackIcon>
             <Container>
+            
             <DetailsContainer>
                 <ButtonBox onClick={()=>setOpen(true)}>
                     <StyledIcon >create task</StyledIcon>

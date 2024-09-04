@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 
 import React, { useEffect, useState } from 'react';
-import { Typography, Container, Button, Box } from '@mui/material';
+import { Typography, Container } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ListBox, ActionsBox, WholeContainer, TileContainer, StyledEditButton, StyledDeleteButton, HelperBox, DescriptionBox } from './styles/listsStyles';
 import DeleteList from './deletelist';
