@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { StyledLink } from '@/app/_components/styles/navbarStyles';
-
+import { AddIconStyled, IconBox } from './styling';
 
 interface ListFormProps {
-    onListCreated: () => void; // Prop type definition for the callback
+    onListCreated: () => void; 
 }
   
 
@@ -68,10 +67,12 @@ export default function ListForm({ onListCreated }: ListFormProps) {
     const handleClose = () => setOpen(false);
 
     return (
-        <>
-            <StyledLink onClick={handleOpen}>
-                Create List
-            </StyledLink>
+        <>  
+            <IconBox>
+                <AddIconStyled onClick={handleOpen}>
+                    Create List
+                </AddIconStyled>
+            </IconBox>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Create List</DialogTitle>

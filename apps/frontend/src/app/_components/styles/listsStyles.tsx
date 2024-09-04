@@ -1,16 +1,30 @@
 'use client'
 import { styled, Box } from "@mui/material"
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 
-export const ListBox = styled(Box)(({theme}) =>({
-    alignItems: 'center',
-    width: '20vw',
-    height: '5vh',
-    fontSize: 15,
-    color: theme.palette.text.primary,
-    marginBottom: 12,
-    padding: 15,
-    alignContent: 'center'
+export const StyledEditButton = styled(EditRoundedIcon)(({theme}) =>({
+    color: theme.palette.secondary.light,
+    fontSize: '30px',
+    transition: 'transform 0.2s ease', 
+    cursor: 'pointer', 
+    '&:hover': {
+      transform: 'scale(1.2)', 
+    },
+    
+   
+}))
+
+export const StyledDeleteButton = styled(DeleteRoundedIcon)(({theme}) =>({
+    color: theme.palette.secondary.light,
+    fontSize: '30px',
+    transition: 'transform 0.2s ease', 
+    cursor: 'pointer', 
+    '&:hover': {
+      transform: 'scale(1.2)', 
+    },
+    
    
 }))
 
@@ -21,19 +35,50 @@ export const ActionsBox = styled(Box)({
     gap: 8, 
 });
 
-export const WholeContainer = styled(Box)(({theme}) =>({
-    display:'flex',
+export const TileContainer = styled(Box)(({ theme }) => ({
+    width: '270px',
+    height: '270px',
+    borderRadius: 12,
+    display: 'flex',
+    transition: 'transform 0.2s ease', 
     flexDirection: 'row',
-    width: '50vw',
-    border: `2px solid transparent`,
-    '&:hover':{
-        border: `2px solid ${theme.palette.primary.main}`,
-        borderRadius: 12
-    },
     '&:hover .actions':{
-        display: "flex"
+        display: 'flex',
+        
     },
+    '&:hover':{
+        cursor: 'pointer',
+        transform: 'scale(1.05)', 
+        
+    },
+    backgroundColor: theme.palette.primary.dark
+  }));
+
+export const WholeContainer = styled(Box)(({ theme }) => ({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)', 
+    gap: '32px',
+    width: '100%',
+}));
+
+export const HelperBox = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12
+    marginBottom: '10px'
 }));
+
+export const DescriptionBox = styled(Box)(({ theme }) => ({
+    
+}));
+
+export const ListBox = styled(Box)(({theme}) =>({
+    display:'flex',
+    flexDirection: 'column',
+    width:'100%',
+    height: '100%',
+    padding: '15px',
+
+   
+}))

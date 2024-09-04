@@ -21,6 +21,12 @@ export class ListsController {
     return this.listsService.findAll(+id);
   }
 
+  @Get('get/:id')
+  findOne(@Param('id') taskID:string) {
+    console.log("wchodzi")
+    return this.listsService.findOne(+taskID);
+  }
+
   @Patch(':id')
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   update(@Req() request, @Param('id') id: string, @Body() updateListDto: UpdateListDto) {

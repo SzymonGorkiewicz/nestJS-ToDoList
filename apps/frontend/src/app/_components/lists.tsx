@@ -4,9 +4,13 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Container, Button, Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { ListBox, ActionsBox, WholeContainer } from './styles/listsStyles';
+import { ListBox, ActionsBox, WholeContainer, TileContainer, StyledEditButton, StyledDeleteButton, HelperBox, DescriptionBox } from './styles/listsStyles';
 import DeleteList from './deletelist';
 import EditList from './editlist';
+import ListForm from '../addlist/_components/listForm';
+
+
+
 interface List {
     name:string
     description:string
@@ -22,6 +26,12 @@ const Lists: React.FC = () => {
   const [listToDelete, setListToDelete] = useState<number | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
   const [listToEdit, setListToEdit] = useState<List | null>(null);
+  
+  const [seed, setSeed] = useState(1);
+
+  const refreshLists = () => {
+    setSeed(prevSeed => prevSeed + 1);
+  };
 
   const editButtonClicked = (list: List) => {
       setListToEdit(list);
@@ -113,8 +123,7 @@ const Lists: React.FC = () => {
   };
 
   const showTasks = (list: List) =>{
-    const listString = encodeURIComponent(JSON.stringify(list));
-    router.push(`/list/${list.id}?list=${listString}`)
+    router.push(`/list/${list.id}`)
   }
 
   useEffect(() => {
@@ -151,7 +160,7 @@ const Lists: React.FC = () => {
     };
 
     fetchLists();
-  }, [router]);
+  }, [router, seed]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -159,24 +168,30 @@ const Lists: React.FC = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        User's Lists
-      </Typography>
-      <ul>
         {lists.length === 0 ? (
           <p>No lists found.</p>
         ) : (
-          lists.map((list) => (
-            <WholeContainer>
-              <ListBox key={list.id} onClick={()=>showTasks(list)}>{list.name}{list.description}</ListBox>
-              <ActionsBox className='actions'>
-                <Button onClick={()=>editButtonClicked(list)} >edit</Button>
-                <Button onClick={()=>deleteButtonClicked(list.id)}>delete</Button>
-              </ActionsBox>
-            </WholeContainer>
-          ))
+          <WholeContainer>
+          <ListForm onListCreated={refreshLists}></ListForm>
+          {lists.map((list) => (
+            <TileContainer key={list.id}>
+              <ListBox className='listbox' onClick={()=>showTasks(list)}>
+                <HelperBox>
+                  <Typography variant='h6' sx={{fontWeight:'bold',wordWrap: 'break-word', flexGrow: 1}}>{list.name}</Typography>
+                  <ActionsBox className='actions'>
+                    <StyledEditButton onClick={(event)=>{event.stopPropagation(); editButtonClicked(list)}} >edit</StyledEditButton>
+                    <StyledDeleteButton onClick={(event)=>{event.stopPropagation();deleteButtonClicked(list.id)}}>delete</StyledDeleteButton>
+                  </ActionsBox>
+                </HelperBox>
+                <DescriptionBox>
+                    <Typography>{list.description}</Typography>
+                </DescriptionBox>
+              </ListBox>
+            </TileContainer>
+          ))}
+          </WholeContainer>
         )}
-      </ul>
+      
       {deleteDialogOpen && (
                 <DeleteList
                     open={deleteDialogOpen}

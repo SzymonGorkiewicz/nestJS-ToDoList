@@ -9,30 +9,30 @@ export const customtheme = createTheme({
         contrastText: '#000000', // Text color for primary color
       },
       secondary: {
-        main: '#ff9f00', // Complementary secondary color (a warm color that contrasts with green)
-        light: '#ffcc33', // Lighter shade of secondary color
-        dark: '#c77d00', // Darker shade of secondary color
-        contrastText: '#000000', // Text color for secondary color
+        main: '#ff9f00', 
+        light: '#ffcc33', 
+        dark: '#c77d00', 
+        contrastText: '#000000', 
       },
       error: {
-        main: '#f44336', // Default error color (can be customized)
+        main: '#f44336', 
       },
       warning: {
-        main: '#ff9800', // Default warning color (can be customized)
+        main: '#ff9800', 
       },
       info: {
-        main: '#2196f3', // Default info color (can be customized)
+        main: '#2196f3', 
       },
       success: {
-        main: '#4caf50', // Default success color (can be customized)
+        main: '#4caf50', 
       },
       text: {
-        primary: '#333333', // Primary text color
-        secondary: '#555555', // Secondary text color
+        primary: '#333333',
+        secondary: '#555555',
       },
       background: {
-        default: '#fafafa', // Default background color
-        paper: '#ffffff', // Background color for paper components
+        default: '#fafafa',
+        paper: '#ffffff', 
       },
     },
   });

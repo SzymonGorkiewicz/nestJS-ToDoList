@@ -23,9 +23,9 @@ export class TasksController {
   }
 
   @Get('get/:id')
-  findOne(@Param('id') listId:string) {
+  findOne(@Param('id') taskID:string) {
     console.log("wchodzi")
-    return this.tasksService.findOne(+listId);
+    return this.tasksService.findOne(+taskID);
   }
 
 

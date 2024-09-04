@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+
+interface List{
+    id:number
+}
+
 interface Task{
     title:string,
     description: string
     id:number
+    list: List
 }
 
 export default function TaskView(){
@@ -58,7 +64,10 @@ export default function TaskView(){
             }
             setOpenDeleteDialog(false)
             console.log('Task deleted successfully');
-            //push('/list/21') tu zmienic z query params na useParams
+            if (task){
+                console.log(task)
+                push(`/list/${task.list.id}`) 
+            }
         } catch (error) {
             console.error(error);
         }

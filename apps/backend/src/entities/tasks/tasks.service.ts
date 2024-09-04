@@ -36,7 +36,7 @@ export class TasksService {
   }
 
   findOne(id: number) {
-    return this.taskRepository.findOneBy({id:id});
+    return this.taskRepository.findOne({where : {id:id}, relations: ['list']});
   }
 
   async update(id: number, updateTaskDto: UpdateTaskDto, userID:number) {
