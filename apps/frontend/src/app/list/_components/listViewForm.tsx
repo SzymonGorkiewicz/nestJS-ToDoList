@@ -187,7 +187,7 @@ export default function ListViewForm(){
             
             <DetailsContainer>
                 <ButtonBox onClick={()=>setOpen(true)}>
-                    <StyledIcon >create task</StyledIcon>
+                    <StyledIcon ></StyledIcon>
                     <Typography variant="h5" component={'div'}>Add task</Typography>
                 </ButtonBox>
                 <Box>

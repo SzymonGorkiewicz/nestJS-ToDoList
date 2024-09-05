@@ -10,7 +10,7 @@ export const StyledBox = styled(Box)({
 export const LogoutButton = styled(Button)(({theme}) =>({
     backgroundColor: theme.palette.secondary.main,
     '&:hover': {
-        backgroundColor: theme.palette.secondary.dark,
+        backgroundColor: theme.palette.background.default,
     },
     fontSize: 15,
     color: theme.palette.text.primary,

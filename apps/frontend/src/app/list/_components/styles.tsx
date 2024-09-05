@@ -56,7 +56,7 @@ export const TaskBox = styled(Box)(({theme}) =>({
 
 export const StyledIcon = styled(AddBoxRoundedIcon)(({theme}) =>({
     fontSize: '200px',
-    color: theme.palette.primary.light,
+    color: theme.palette.background.default,
 
 }))
 

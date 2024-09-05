@@ -6,7 +6,7 @@ import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 export const AddIconStyled = styled(AddBoxRoundedIcon)(({theme}) =>({
     width: 'inherit',
     height: 'inherit',
-    color: theme.palette.primary.dark,
+    color: theme.palette.secondary.light,
     borderRadius:30,
 }))
 
@@ -22,6 +22,6 @@ export const IconBox = styled(Box)(({theme}) =>({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 30,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.dark,
    
 }))

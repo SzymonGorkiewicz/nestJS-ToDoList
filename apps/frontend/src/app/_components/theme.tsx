@@ -3,14 +3,14 @@ import { createTheme } from '@mui/material/styles';
 export const customtheme = createTheme({
     palette: {
       primary: {
-        main: '#8bff87', // Light green color
-        light: '#baff9c', // Lighter shade of primary color
-        dark: '#6abf6a', // Darker shade of primary color
-        contrastText: '#000000', // Text color for primary color
+        main: '#DBB5B5',
+        light: '#baff9c', 
+        dark: '#C39898', 
+        contrastText: '#000000', 
       },
       secondary: {
-        main: '#ff9f00', 
-        light: '#ffcc33', 
+        main: '#987070', 
+        light: '#F1E5D1', 
         dark: '#c77d00', 
         contrastText: '#000000', 
       },
@@ -31,7 +31,7 @@ export const customtheme = createTheme({
         secondary: '#555555',
       },
       background: {
-        default: '#fafafa',
+        default: '#F1E5D1',
         paper: '#ffffff', 
       },
     },
