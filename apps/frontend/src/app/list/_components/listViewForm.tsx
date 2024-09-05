@@ -190,7 +190,7 @@ export default function ListViewForm(){
                     <StyledIcon ></StyledIcon>
                     <Typography variant="h5" component={'div'}>Add task</Typography>
                 </ButtonBox>
-                <Box>
+                <Box sx={{flex:5}}>
                     {listDetails ? (
                         <ListBox>
                             <Typography variant="h4">{listDetails.name}</Typography>

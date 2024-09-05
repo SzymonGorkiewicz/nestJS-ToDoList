@@ -85,6 +85,7 @@ export const ButtonBox = styled(Box)(({theme}) =>({
     '&:hover':{
         cursor: 'pointer',
         transform: 'scale(1.05)'
-    }
+    },
+    flex: 1
 }))
 

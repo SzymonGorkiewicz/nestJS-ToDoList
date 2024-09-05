@@ -11,16 +11,19 @@ export const ButtonsBox = styled(Box)(({theme}) =>({
 }))
 
 export const DetailsBox = styled(Box)(({theme}) =>({
-    flex: 4,
+    flex: 8,
     display: 'flex',
     flexDirection:'column',
-    gap: 20
+    gap: 20,
+    backgroundColor: theme.palette.primary.dark,
+    borderRadius: 12,
+    padding: 10
 }))
 
 export const WholeContainer = styled(Box)(({theme})=>({
     display: 'flex',
     flexDirection: 'row',
-    gap: theme.spacing(30),
+    gap: theme.spacing(20),
     width: '100%',
     height: 'auto'
 }))
