@@ -41,7 +41,6 @@ export class TasksService {
 
   async update(id: number, updateTaskDto: UpdateTaskDto, userID:number) {
     const task = await this.taskRepository.findOne({where: {id:id, list:{id:updateTaskDto.list,user:{id:userID}}}, relations: ['list']})
-
     const updatedFields: Partial<Task> = {};
 
     if(!task){
@@ -61,13 +60,13 @@ export class TasksService {
       updatedFields.list = list
     }
 
-    if (updateTaskDto.completed){
+    if (typeof updateTaskDto.completed === 'boolean'){
       updatedFields.completed = updateTaskDto.completed
     }
     
     await this.taskRepository.update(id,updatedFields)
 
-    return this.taskRepository.findOneBy({id:id});
+    return {message: 'updatedSuccesfully'};
   }
 
   async remove(id: number, userID:number) {

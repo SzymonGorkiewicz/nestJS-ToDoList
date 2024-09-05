@@ -1,5 +1,5 @@
 'use client'
-import { styled, Box } from "@mui/material"
+import { styled, Box, Checkbox } from "@mui/material"
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 
@@ -14,9 +14,17 @@ export const ListBox = styled(Box)(({theme}) =>({
     
 }))
 
+export const StyledCheckBox = styled(Checkbox)(({theme}) =>({
+    size: 'small',
+    color: theme.palette.primary.main,
+    '&.Mui-checked':{
+        color:theme.palette.secondary.main
+    }
+}))
+
 export const Task = styled(Box)(({theme}) =>({
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     marginTop: 12,
     marginBottom: 20,
     transition: 'transform 0.2s ease', 

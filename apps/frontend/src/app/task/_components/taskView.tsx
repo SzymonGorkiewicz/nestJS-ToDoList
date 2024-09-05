@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { BackIcon } from '@/app/list/_components/styles';
+import { ButtonsBox, DeleteBox, DetailsBox, EditBox, WholeContainer } from './styles';
+import { StyledEditButton, StyledDeleteButton } from '@/app/_components/styles/listsStyles';
 
 interface List{
     id:number
@@ -12,6 +14,7 @@ interface Task{
     description: string
     id:number
     list: List
+
 }
 
 export default function TaskView(){
@@ -76,14 +79,21 @@ export default function TaskView(){
 
     const editTask = async (task: Task) => {
         const user = JSON.parse(localStorage.getItem('user')!)
+        
+        const updatedTask = {
+            title: task.title,
+            description: task.description,
+            list: task.list.id,
+        };
+
         try {
-            const response = await fetch(`${API_URL}/${task.id}`, {
+            const response = await fetch(`${API_URL}/${taskId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.access_token}`
                 },
-                body: JSON.stringify(task),
+                body: JSON.stringify(updatedTask),
             });
     
             if (!response.ok) {
@@ -111,53 +121,62 @@ export default function TaskView(){
 
     return(
         <>  <BackIcon onClick={()=>push(`/list/${task.list.id}`)}></BackIcon>
-            <Button variant='contained' onClick={()=>setOpenEditDialog(true)}>edit</Button>
-            <Button variant='contained' onClick={()=>setOpenDeleteDialog(true)}>delete</Button>
-            <div>
-                <h1>Task Details</h1>
-                <p>{task.title}</p>
-                <p>{task.description}</p>
-            </div>
-            <Dialog open={openEditDialog} onClose={()=>setOpenEditDialog(false)}>
-                <DialogTitle>Edit Task</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Title"
-                        type="text"
-                        fullWidth
-                        variant="outlined"
-                        name='title'
-                        value={editedTask?.title || ''}
-                        onChange={handleEditTaskChange}
-                    />
-                    <TextField
-                        margin="dense"
-                        label="Description"
-                        type="text"
-                        fullWidth
-                        variant="outlined"
-                        name='description'
-                        value={editedTask?.description || ''}
-                        onChange={handleEditTaskChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={()=>setOpenEditDialog(false)}>Cancel</Button>
-                    <Button onClick={()=>editedTask && editTask(editedTask)}>Save</Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog open={openDeleteDialog} onClose={()=>setOpenDeleteDialog(false)}>
-                <DialogTitle>Confirm Delete</DialogTitle>
-                <DialogContent>
-                    <Typography>Are you sure you want to delete this task?</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={()=>setOpenDeleteDialog(false)}>Cancel</Button>
-                    <Button onClick={()=>deleteTask(task.id)} color="error">Delete</Button>
-                </DialogActions>
-            </Dialog>
+            <Container>
+                <WholeContainer>
+                    <ButtonsBox>
+                        <EditBox>
+                            <StyledEditButton sx={{fontSize: 130}} onClick={()=>setOpenEditDialog(true)}>edit</StyledEditButton>
+                        </EditBox>
+                        <DeleteBox>
+                            <StyledDeleteButton sx={{fontSize: 130}} onClick={()=>setOpenDeleteDialog(true)}>delete</StyledDeleteButton>
+                        </DeleteBox> 
+                    </ButtonsBox>
+                    <DetailsBox>
+                        <Typography variant='h3'>{task.title}</Typography>
+                        <Typography variant='body1'>{task.description}</Typography>
+                    </DetailsBox>
+                </WholeContainer>
+                <Dialog open={openEditDialog} onClose={()=>setOpenEditDialog(false)}>
+                    <DialogTitle>Edit Task</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="Title"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            name='title'
+                            value={editedTask?.title || ''}
+                            onChange={handleEditTaskChange}
+                        />
+                        <TextField
+                            margin="dense"
+                            label="Description"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            name='description'
+                            value={editedTask?.description || ''}
+                            onChange={handleEditTaskChange}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={()=>setOpenEditDialog(false)}>Cancel</Button>
+                        <Button onClick={()=>editedTask && editTask(editedTask)}>Save</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={openDeleteDialog} onClose={()=>setOpenDeleteDialog(false)}>
+                    <DialogTitle>Confirm Delete</DialogTitle>
+                    <DialogContent>
+                        <Typography>Are you sure you want to delete this task?</Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={()=>setOpenDeleteDialog(false)}>Cancel</Button>
+                        <Button onClick={()=>deleteTask(task.id)} color="error">Delete</Button>
+                    </DialogActions>
+                </Dialog>
+            </Container>
         </>
     )
 }

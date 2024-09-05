@@ -2,7 +2,8 @@ import Navbar from "@/app/_components/navbar"
 import { Button, Box, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { useRouter, useParams } from "next/navigation"
 import React, { useEffect, useState } from "react";
-import { BackIcon, ButtonBox, DetailsContainer, ListBox,  StyledIcon, Task, TaskBox } from "./styles";
+import { BackIcon, ButtonBox,StyledCheckBox, DetailsContainer, ListBox,  StyledIcon, Task, TaskBox } from "./styles";
+
 
 
 interface List {
@@ -15,6 +16,7 @@ interface Task{
     title:string,
     description: string
     id:number
+    completed:boolean
 }
 
 export default function ListViewForm(){
@@ -141,6 +143,42 @@ export default function ListViewForm(){
         }));
     };
 
+    const  handleCheckBoxChange = async (checked:boolean, taskID:number) => {
+        console.log(checked)
+        console.log(taskID)
+        const user = JSON.parse(localStorage.getItem('user')!)
+        
+        const updatedCheckbox = {
+            completed: checked,
+            list: listID
+        };
+
+        console.log(updatedCheckbox)
+        try {
+            const response = await fetch(`${API_URL}tasks/${taskID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.access_token}`
+                },
+                body: JSON.stringify(updatedCheckbox),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to update task');
+            }
+            const result = await response.json()
+            console.log(result)
+            setAllTask((prevTasks) =>
+                prevTasks!.map((task) =>
+                    task.id === taskID ? { ...task, completed: checked } : task
+                )
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return(
         <>
             <Navbar />
@@ -167,6 +205,17 @@ export default function ListViewForm(){
                             allTask.map((task) => (
                                 <Task key={task.id} onClick={()=>taskDetails(task)}>
                                     <Typography variant="h6">{task.title}</Typography>
+                                    <StyledCheckBox
+                                        checked={task.completed}
+                                        onClick={(e)=>{
+                                            e.stopPropagation();
+                                            // task.completed = !task.completed;
+                                            handleCheckBoxChange(!task.completed, task.id)
+                                            
+                                        }}
+                                        
+                                        
+                                    />
                                 </Task>
                             ))
                         ) : (
