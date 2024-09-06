@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { BackIcon } from '@/app/list/_components/styles';
-import { ButtonsBox, DeleteBox, DetailsBox, EditBox, WholeContainer } from './styles';
+import { ButtonsBox, DeleteBox, DescriptionBox, DetailsBox, EditBox, TitleBox, WholeContainer } from './styles';
 import { StyledEditButton, StyledDeleteButton } from '@/app/_components/styles/listsStyles';
 
 interface List{
@@ -132,8 +132,12 @@ export default function TaskView(){
                         </DeleteBox> 
                     </ButtonsBox>
                     <DetailsBox>
-                        <Typography variant='h3'>{task.title}</Typography>
-                        <Typography variant='body1'>{task.description}</Typography>
+                        <TitleBox>
+                            <Typography variant='h3'>{task.title}</Typography>
+                        </TitleBox>
+                        <DescriptionBox>
+                            <Typography variant='body1'>{task.description}</Typography>
+                        </DescriptionBox>
                     </DetailsBox>
                 </WholeContainer>
                 <Dialog open={openEditDialog} onClose={()=>setOpenEditDialog(false)}>

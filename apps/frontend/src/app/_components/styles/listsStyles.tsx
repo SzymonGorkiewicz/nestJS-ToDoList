@@ -57,9 +57,20 @@ export const TileContainer = styled(Box)(({ theme }) => ({
 
 export const WholeContainer = styled(Box)(({ theme }) => ({
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)', 
+    gridTemplateColumns: 'repeat(1, 1fr)', 
     gap: '32px',
     width: '100%',
+    justifyItems: 'center',
+
+    [theme.breakpoints.up('sm')]:{
+        gridTemplateColumns: 'repeat(2,1fr)'
+    },
+    [theme.breakpoints.up('md')]:{
+        gridTemplateColumns: 'repeat(3,1fr)'
+    },
+    [theme.breakpoints.up('lg')]:{
+        gridTemplateColumns: 'repeat(4,1fr)'
+    }
 }));
 
 export const HelperBox = styled(Box)(({ theme }) => ({
@@ -67,11 +78,37 @@ export const HelperBox = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    maxWidth: '100%'
 }));
 
 export const DescriptionBox = styled(Box)(({ theme }) => ({
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+    WebkitLineClamp: 7,
+    textOverflow: 'ellipsis',
+    maxHeight: '70%',
+    maxWidth: '90%',
+    wordBreak: 'break-word',
+    overflowWrap: 'break-word',
+    whiteSpace: 'normal', 
     
+
+}));
+
+
+export const NameBox = styled(Box)(({ theme }) => ({
+    flex: 2,
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 1,
+    overflow: 'hidden',
+    maxWidth: '60%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'normal',
+    
+
 }));
 
 export const ListBox = styled(Box)(({theme}) =>({

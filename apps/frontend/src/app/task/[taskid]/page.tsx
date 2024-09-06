@@ -4,7 +4,9 @@ import Navbar from "@/app/_components/navbar"
 import { ThemeProvider } from "@emotion/react"
 import { customtheme } from "@/app/_components/theme"
 import { GlobalStyles } from "@mui/material"
-export default function Page(){
+import withAuth from "@/app/_components/auth"
+
+const Page: React.FC = () =>{
     return(
         <>  
             <ThemeProvider theme={customtheme}>
@@ -15,3 +17,5 @@ export default function Page(){
         </>
     )
 }
+
+export default withAuth(Page)

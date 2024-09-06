@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, Unique } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Task } from '../../tasks/entities/task.entity';
-import { IsNotEmpty } from 'class-validator';
+
 
 @Entity()
+@Unique(['name', 'user'])
 export class List {
 
     @PrimaryGeneratedColumn()

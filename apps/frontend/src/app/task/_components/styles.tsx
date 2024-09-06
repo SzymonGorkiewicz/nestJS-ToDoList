@@ -20,6 +20,29 @@ export const DetailsBox = styled(Box)(({theme}) =>({
     padding: 10
 }))
 
+export const DescriptionBox = styled(Box)(({theme}) =>({
+    overflowY: 'auto',
+    overflowWrap: 'break-word',
+    wordBreak: 'break-word',
+    whiteSpace: 'normal', 
+    '&::-webkit-scrollbar': {
+     width: '15px',
+     },
+     '&::-webkit-scrollbar-track': {
+         background: theme.palette.primary.main,
+         borderRadius: '8px', 
+     },
+     '&::-webkit-scrollbar-thumb': {
+         background: theme.palette.secondary.main, 
+         borderRadius: '8px', 
+ 
+     },
+}))
+
+export const TitleBox = styled(Box)(({theme}) =>({
+  
+}))
+
 export const WholeContainer = styled(Box)(({theme})=>({
     display: 'flex',
     flexDirection: 'row',

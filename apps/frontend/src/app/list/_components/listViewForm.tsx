@@ -2,7 +2,7 @@ import Navbar from "@/app/_components/navbar"
 import { Button, Box, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { useRouter, useParams } from "next/navigation"
 import React, { useEffect, useRef, useState } from "react";
-import { BackIcon, ButtonBox,StyledCheckBox, DetailsContainer, ListBox,  StyledIcon, Task, TaskBox } from "./styles";
+import { BackIcon, ButtonBox,StyledCheckBox, DetailsContainer, ListBox,  StyledIcon, Task, TaskBox, DescriptionBox, TitleBox } from "./styles";
 
 
 
@@ -203,8 +203,12 @@ export default function ListViewForm(){
                 <Box sx={{flex:5}}>
                     {listDetails ? (
                         <ListBox>
-                            <Typography variant="h4">{listDetails.name}</Typography>
-                            <Typography variant="h6">{listDetails.description}</Typography>
+                            <TitleBox sx={{flex: 1}}>
+                                <Typography variant="h4">{listDetails.name}</Typography>
+                            </TitleBox>
+                            <DescriptionBox>
+                                <Typography variant="h6">{listDetails.description}</Typography>
+                            </DescriptionBox>
                         </ListBox>
                     ) : (
                         <p>Fetching list details...</p>

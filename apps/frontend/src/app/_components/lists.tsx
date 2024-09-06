@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Typography, Container } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { ListBox, ActionsBox, WholeContainer, TileContainer, StyledEditButton, StyledDeleteButton, HelperBox, DescriptionBox } from './styles/listsStyles';
+import { ListBox, ActionsBox, WholeContainer, TileContainer, StyledEditButton, StyledDeleteButton, HelperBox, DescriptionBox, NameBox } from './styles/listsStyles';
 import DeleteList from './deletelist';
 import EditList from './editlist';
 import ListForm from '../addlist/_components/listForm';
@@ -195,7 +195,9 @@ const Lists: React.FC = () => {
               >
               <ListBox className='listbox' onClick={()=>showTasks(list)}>
                 <HelperBox>
-                  <Typography variant='h6' sx={{fontWeight:'bold',wordWrap: 'break-word', flexGrow: 1}}>{list.name}</Typography>
+                  <NameBox>
+                    <Typography variant='h6' sx={{fontWeight:'bold',wordWrap: 'break-word', flexGrow: 1}}>{list.name}</Typography>
+                  </NameBox>
                   <ActionsBox className='actions'>
                     <StyledEditButton onClick={(event)=>{event.stopPropagation(); editButtonClicked(list)}} >edit</StyledEditButton>
                     <StyledDeleteButton onClick={(event)=>{event.stopPropagation();deleteButtonClicked(list.id)}}>delete</StyledDeleteButton>
