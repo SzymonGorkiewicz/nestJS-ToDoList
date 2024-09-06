@@ -1,7 +1,7 @@
 'use client'
 /* eslint-disable react/no-unescaped-entities */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Typography, Container } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ListBox, ActionsBox, WholeContainer, TileContainer, StyledEditButton, StyledDeleteButton, HelperBox, DescriptionBox } from './styles/listsStyles';
@@ -26,8 +26,17 @@ const Lists: React.FC = () => {
   const [listToDelete, setListToDelete] = useState<number | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
   const [listToEdit, setListToEdit] = useState<List | null>(null);
-  
   const [seed, setSeed] = useState(1);
+  const dragTile = useRef<number>(0)
+  const draggedOverTile = useRef<number>(0)
+  
+  const handleDragSort = () => {
+    const listClone = [...lists]
+    const temp = listClone[dragTile.current]
+    listClone[dragTile.current] = listClone[draggedOverTile.current]
+    listClone[draggedOverTile.current] = temp
+    setLists(listClone)
+  }
 
   const refreshLists = () => {
     setSeed(prevSeed => prevSeed + 1);
@@ -166,6 +175,9 @@ const Lists: React.FC = () => {
     return <p>Loading...</p>;
   }
 
+  
+
+
   return (
     <Container>
         {lists.length === 0 ? (
@@ -173,8 +185,14 @@ const Lists: React.FC = () => {
         ) : (
           <WholeContainer>
           <ListForm onListCreated={refreshLists}></ListForm>
-          {lists.map((list) => (
-            <TileContainer key={list.id}>
+          {lists.map((list, index) => (
+            <TileContainer key={list.id} 
+              draggable
+              onDragStart={()=>(dragTile.current = index)}
+              onDragEnter={()=>(draggedOverTile.current=index)}
+              onDragEnd={handleDragSort}
+              onDragOver={(e)=>e.preventDefault()}
+              >
               <ListBox className='listbox' onClick={()=>showTasks(list)}>
                 <HelperBox>
                   <Typography variant='h6' sx={{fontWeight:'bold',wordWrap: 'break-word', flexGrow: 1}}>{list.name}</Typography>

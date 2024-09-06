@@ -51,7 +51,8 @@ export const TileContainer = styled(Box)(({ theme }) => ({
         transform: 'scale(1.05)', 
         
     },
-    backgroundColor: theme.palette.primary.dark
+    backgroundColor: theme.palette.primary.dark,
+    position: 'relative'
   }));
 
 export const WholeContainer = styled(Box)(({ theme }) => ({

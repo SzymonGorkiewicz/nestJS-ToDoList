@@ -1,7 +1,7 @@
 import Navbar from "@/app/_components/navbar"
 import { Button, Box, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { useRouter, useParams } from "next/navigation"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BackIcon, ButtonBox,StyledCheckBox, DetailsContainer, ListBox,  StyledIcon, Task, TaskBox } from "./styles";
 
 
@@ -34,6 +34,16 @@ export default function ListViewForm(){
         description: '',
         list: listID
     })
+    const dragTile = useRef<number>(0)
+    const draggedOverTile = useRef<number>(0)
+    
+    const handleDragSort = () => {
+        const taskClone = [...allTask!]
+        const temp = taskClone[dragTile.current]
+        taskClone[dragTile.current] = taskClone[draggedOverTile.current]
+        taskClone[draggedOverTile.current] = temp
+        setAllTask(taskClone)
+    }
     
 
     useEffect(()=>{
@@ -202,14 +212,21 @@ export default function ListViewForm(){
                     <TaskBox>
                         <Typography variant='h5'>Tasks:</Typography>
                         {allTask ? (
-                            allTask.map((task) => (
-                                <Task key={task.id} onClick={()=>taskDetails(task)}>
+                            allTask.map((task, index) => (
+                                <Task 
+                                key={task.id} 
+                                onClick={()=>taskDetails(task)}
+                                draggable
+                                onDragStart={()=>(dragTile.current = index)}
+                                onDragEnter={()=>(draggedOverTile.current=index)}
+                                onDragEnd={handleDragSort}
+                                onDragOver={(e)=>e.preventDefault()}
+                                >
                                     <Typography variant="h6">{task.title}</Typography>
                                     <StyledCheckBox
                                         checked={task.completed}
                                         onClick={(e)=>{
                                             e.stopPropagation();
-                                            // task.completed = !task.completed;
                                             handleCheckBoxChange(!task.completed, task.id)
                                             
                                         }}
