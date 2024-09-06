@@ -2,16 +2,19 @@ import { styled, Typography } from "@mui/material";
 import { Button, Box, TextField, Link } from '@mui/material';
 
 export const StyledBox = styled(Box)({
-    width: '100vw',
-    height: '100vh',
+    width: '100%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     marginTop: 100,
+    '@media (max-width: 700px)': {
+        
+    },
     
 })
 
 export const StyledTextField = styled(TextField)({
-    width: '13vw',
+    width: '180px'
    
 })
 
@@ -39,7 +42,7 @@ export const SecondaryBox = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '20vw',
+    width: '300px',
     height: 'auto',
     gap: 15,
     boxShadow: '0 10px 30px 3px rgba(0, 0, 0, 0.3)',
@@ -59,7 +62,7 @@ export const StyledButton = styled(Button)(({theme}) => ({
     '&:hover': {
         backgroundColor: theme.palette.primary.dark,
     },
-    width: '15vw'
+    width: '200px'
 }))
 
 export const SignInBox = styled(Box)(({theme}) =>({

@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Typography, Container } from '@mui/material';
+import { Typography, Container, Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ListBox, ActionsBox, WholeContainer, TileContainer, StyledEditButton, StyledDeleteButton, HelperBox, DescriptionBox, NameBox } from './styles/listsStyles';
 import DeleteList from './deletelist';
@@ -180,56 +180,67 @@ const Lists: React.FC = () => {
 
   return (
     <Container>
+      <WholeContainer>
+        <ListForm onListCreated={refreshLists} />
         {lists.length === 0 ? (
-          <p>No lists found.</p>
+          <Box sx={{width:'100%'}}>
+            <Typography variant='h2'>Create your first To-do list</Typography>
+          </Box>
+          
         ) : (
-          <WholeContainer>
-          <ListForm onListCreated={refreshLists}></ListForm>
-          {lists.map((list, index) => (
-            <TileContainer key={list.id} 
+          lists.map((list, index) => (
+            <TileContainer
+              key={list.id}
               draggable
-              onDragStart={()=>(dragTile.current = index)}
-              onDragEnter={()=>(draggedOverTile.current=index)}
+              onDragStart={() => (dragTile.current = index)}
+              onDragEnter={() => (draggedOverTile.current = index)}
               onDragEnd={handleDragSort}
-              onDragOver={(e)=>e.preventDefault()}
-              >
-              <ListBox className='listbox' onClick={()=>showTasks(list)}>
+              onDragOver={(e) => e.preventDefault()}
+            >
+              <ListBox className='listbox' onClick={() => showTasks(list)}>
                 <HelperBox>
                   <NameBox>
-                    <Typography variant='h6' sx={{fontWeight:'bold',wordWrap: 'break-word', flexGrow: 1}}>{list.name}</Typography>
+                    <Typography variant='h6' sx={{ fontWeight: 'bold', wordWrap: 'break-word', flexGrow: 1 }}>
+                      {list.name}
+                    </Typography>
                   </NameBox>
                   <ActionsBox className='actions'>
-                    <StyledEditButton onClick={(event)=>{event.stopPropagation(); editButtonClicked(list)}} >edit</StyledEditButton>
-                    <StyledDeleteButton onClick={(event)=>{event.stopPropagation();deleteButtonClicked(list.id)}}>delete</StyledDeleteButton>
+                    <StyledEditButton onClick={(event) => { event.stopPropagation(); editButtonClicked(list); }}>
+                      edit
+                    </StyledEditButton>
+                    <StyledDeleteButton onClick={(event) => { event.stopPropagation(); deleteButtonClicked(list.id); }}>
+                      delete
+                    </StyledDeleteButton>
                   </ActionsBox>
                 </HelperBox>
                 <DescriptionBox>
-                    <Typography>{list.description}</Typography>
+                  <Typography>{list.description}</Typography>
                 </DescriptionBox>
               </ListBox>
             </TileContainer>
-          ))}
-          </WholeContainer>
+          ))
         )}
-      
+      </WholeContainer>
+  
       {deleteDialogOpen && (
-                <DeleteList
-                    open={deleteDialogOpen}
-                    onConfirm={handleDeleteConfirm}
-                    onCancel={handleDeleteCancel}
-                />
-            )}
+        <DeleteList
+          open={deleteDialogOpen}
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteCancel}
+        />
+      )}
       {editDialogOpen && listToEdit && (
-                <EditList
-                    open={editDialogOpen}
-                    initialName={listToEdit.name}
-                    initialDescription={listToEdit.description}
-                    onConfirm={handleEditConfirm}
-                    onCancel={handleEditCancel}
-                />
-            )}
+        <EditList
+          open={editDialogOpen}
+          initialName={listToEdit.name}
+          initialDescription={listToEdit.description}
+          onConfirm={handleEditConfirm}
+          onCancel={handleEditCancel}
+        />
+      )}
     </Container>
   );
+  
 };
 
 export default Lists;

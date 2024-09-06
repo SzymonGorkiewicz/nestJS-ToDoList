@@ -6,7 +6,11 @@ export const ButtonsBox = styled(Box)(({theme}) =>({
    flexDirection: 'column',
    alignItems:'center',
    flex: 1,
-   gap: 20
+   gap: 20,
+   '@media (max-width: 700px)': {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
 
 }))
 
@@ -17,7 +21,8 @@ export const DetailsBox = styled(Box)(({theme}) =>({
     gap: 20,
     backgroundColor: theme.palette.primary.dark,
     borderRadius: 12,
-    padding: 10
+    padding: 10,
+    
 }))
 
 export const DescriptionBox = styled(Box)(({theme}) =>({
@@ -39,28 +44,33 @@ export const DescriptionBox = styled(Box)(({theme}) =>({
      },
 }))
 
-export const TitleBox = styled(Box)(({theme}) =>({
-  
-}))
 
 export const WholeContainer = styled(Box)(({theme})=>({
     display: 'flex',
     flexDirection: 'row',
     gap: theme.spacing(20),
     width: '100%',
-    height: 'auto'
+    height: 'auto',
+    '@media (max-width: 700px)': {
+        flexDirection: 'column',
+        gap: theme.spacing(5)
+    },
 }))
 
-export const EditBox = styled(Box)(({theme}) =>({
+export const IconBox = styled(Box)(({theme}) =>({
     flex: 4,
     marginTop: 12,
     backgroundColor: theme.palette.primary.dark,
-    borderRadius: 12
+    borderRadius: 12,
+    maxHeight: '130px',
+    maxWidth: '150px',
+    '@media (max-width: 700px)': {
+        display:'flex',
+        justifyContent:'center',
+        alighItems:'center',
+        maxHeight: '130px',
+        maxWidth: '120px',
+        marginBottom:0
+    },
 }))
 
-export const DeleteBox = styled(Box)(({theme}) =>({
-    flex: 4,
-    marginBottom: 12,
-    backgroundColor: theme.palette.primary.dark,
-    borderRadius: 12
-}))

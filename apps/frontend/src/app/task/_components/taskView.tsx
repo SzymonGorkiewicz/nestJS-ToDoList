@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { BackIcon } from '@/app/list/_components/styles';
-import { ButtonsBox, DeleteBox, DescriptionBox, DetailsBox, EditBox, TitleBox, WholeContainer } from './styles';
+import { ButtonsBox, DescriptionBox, DetailsBox, IconBox, WholeContainer } from './styles';
 import { StyledEditButton, StyledDeleteButton } from '@/app/_components/styles/listsStyles';
 
 interface List{
@@ -124,17 +124,17 @@ export default function TaskView(){
             <Container>
                 <WholeContainer>
                     <ButtonsBox>
-                        <EditBox>
-                            <StyledEditButton sx={{fontSize: 130}} onClick={()=>setOpenEditDialog(true)}>edit</StyledEditButton>
-                        </EditBox>
-                        <DeleteBox>
-                            <StyledDeleteButton sx={{fontSize: 130}} onClick={()=>setOpenDeleteDialog(true)}>delete</StyledDeleteButton>
-                        </DeleteBox> 
+                        <IconBox>
+                            <StyledEditButton sx={{fontSize: 120}} onClick={()=>setOpenEditDialog(true)}>edit</StyledEditButton>
+                        </IconBox>
+                        <IconBox>
+                            <StyledDeleteButton sx={{fontSize: 120}} onClick={()=>setOpenDeleteDialog(true)}>delete</StyledDeleteButton>
+                        </IconBox> 
                     </ButtonsBox>
                     <DetailsBox>
-                        <TitleBox>
+                        <DescriptionBox>
                             <Typography variant='h3'>{task.title}</Typography>
-                        </TitleBox>
+                        </DescriptionBox>
                         <DescriptionBox>
                             <Typography variant='body1'>{task.description}</Typography>
                         </DescriptionBox>
