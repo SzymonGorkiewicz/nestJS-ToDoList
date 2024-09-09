@@ -81,7 +81,7 @@ export default function LoginForm() {
               Login
             </StyledButton>
             <StyledTypography variant="body1">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <StyledLink href="/register">register here</StyledLink>
             </StyledTypography>
           </SecondaryBox>
