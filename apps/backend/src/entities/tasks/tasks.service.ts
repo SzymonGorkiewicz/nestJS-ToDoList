@@ -7,72 +7,85 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { List } from '../lists/entities/list.entity';
 
-
 @Injectable()
 export class TasksService {
+  constructor(
+    @InjectRepository(Task) private taskRepository: Repository<Task>,
+    @InjectRepository(List) private listRepository: Repository<List>,
+    private listService: ListsService,
+  ) {}
 
-  constructor(@InjectRepository(Task) private taskRepository: Repository<Task>,
-  @InjectRepository(List) private listRepository: Repository<List>, 
-    private listService: ListsService
-    ){}
+  async create(createTaskDto: CreateTaskDto, userID: number) {
+    const list = await this.listRepository.findOne({
+      where: { id: createTaskDto.list, user: { id: userID } },
+      relations: ['user'],
+    });
 
-  async create(createTaskDto: CreateTaskDto, userID:number) {
-    const list = await this.listRepository.findOne({where: {id:createTaskDto.list, user:{id: userID}}, relations: ['user']})
-    
-    if (!list){
-      throw new NotFoundException("List not found")
+    if (!list) {
+      throw new NotFoundException('List not found');
     }
 
     const task = new Task();
     task.title = createTaskDto.title;
     task.description = createTaskDto.description;
-    task.list = list
+    task.list = list;
 
     return this.taskRepository.save(task);
   }
 
-  findAll(listId:number) {
-    return this.taskRepository.find({where: {list: {id:listId}}});
+  findAll(listId: number) {
+    return this.taskRepository.find({ where: { list: { id: listId } } });
   }
 
   findOne(id: number) {
-    return this.taskRepository.findOne({where : {id:id}, relations: ['list']});
+    return this.taskRepository.findOne({
+      where: { id: id },
+      relations: ['list'],
+    });
   }
 
-  async update(id: number, updateTaskDto: UpdateTaskDto, userID:number) {
-    const task = await this.taskRepository.findOne({where: {id:id, list:{id:updateTaskDto.list,user:{id:userID}}}, relations: ['list']})
+  async update(id: number, updateTaskDto: UpdateTaskDto, userID: number) {
+    const task = await this.taskRepository.findOne({
+      where: { id: id, list: { id: updateTaskDto.list, user: { id: userID } } },
+      relations: ['list'],
+    });
     const updatedFields: Partial<Task> = {};
 
-    if(!task){
-      throw new NotFoundException("Task not found")
+    if (!task) {
+      throw new NotFoundException('Task not found');
     }
 
-    if (updateTaskDto.title){
-      updatedFields.title = updateTaskDto.title
+    if (updateTaskDto.title) {
+      updatedFields.title = updateTaskDto.title;
     }
 
-    if (updateTaskDto.description){
-      updatedFields.description = updateTaskDto.description
+    if (updateTaskDto.description) {
+      updatedFields.description = updateTaskDto.description;
     }
 
-    if (updateTaskDto.list){
-      const list = await this.listRepository.findOneBy({id:updateTaskDto.list})
-      updatedFields.list = list
+    if (updateTaskDto.list) {
+      const list = await this.listRepository.findOneBy({
+        id: updateTaskDto.list,
+      });
+      updatedFields.list = list;
     }
 
-    if (typeof updateTaskDto.completed === 'boolean'){
-      updatedFields.completed = updateTaskDto.completed
+    if (typeof updateTaskDto.completed === 'boolean') {
+      updatedFields.completed = updateTaskDto.completed;
     }
-    
-    await this.taskRepository.update(id,updatedFields)
 
-    return {message: 'updatedSuccesfully'};
+    await this.taskRepository.update(id, updatedFields);
+
+    return { message: 'updatedSuccesfully' };
   }
 
-  async remove(id: number, userID:number) {
-    const task = await this.taskRepository.findOne({where: {id:id}, relations: ['list', 'list.user']})
-    if (task.list.user.id !==userID){
-      throw new NotFoundException("No permission")
+  async remove(id: number, userID: number) {
+    const task = await this.taskRepository.findOne({
+      where: { id: id },
+      relations: ['list', 'list.user'],
+    });
+    if (task.list.user.id !== userID) {
+      throw new NotFoundException('No permission');
     }
 
     return this.taskRepository.delete(id);

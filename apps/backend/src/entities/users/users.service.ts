@@ -15,14 +15,15 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findOne(param: string|number): Promise<User> {
+  async findOne(param: string | number): Promise<User> {
     if (typeof param === 'number') {
       return await this.userRepository.findOneBy({ id: param });
     } else if (typeof param === 'string') {
       return await this.userRepository.findOneBy({ username: param });
-    } 
-    throw new Error('Invalid parameter type. Must be a string (username) or number (id).');
-    
+    }
+    throw new Error(
+      'Invalid parameter type. Must be a string (username) or number (id).',
+    );
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {

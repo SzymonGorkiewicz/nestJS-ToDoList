@@ -6,13 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../users/users.module';
 import { AuthModule } from 'src/auth/auth.module';
 
-
 @Module({
-  imports: [TypeOrmModule.forFeature([List]),
-            UsersModule,
-            AuthModule],
+  imports: [TypeOrmModule.forFeature([List]), UsersModule, AuthModule],
   controllers: [ListsController],
   providers: [ListsService],
-  exports: [ListsService]
+  exports: [ListsService],
 })
 export class ListsModule {}

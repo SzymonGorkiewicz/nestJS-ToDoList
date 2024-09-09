@@ -8,7 +8,7 @@ import { List } from '../lists/entities/list.entity';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports:[ListsModule, TypeOrmModule.forFeature([Task, List]), AuthModule],
+  imports: [ListsModule, TypeOrmModule.forFeature([Task, List]), AuthModule],
   controllers: [TasksController],
   providers: [TasksService],
 })

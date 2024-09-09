@@ -1,13 +1,12 @@
-import { IsNotEmpty, IsOptional } from "class-validator";
-import { User } from "src/entities/users/entities/user.entity";
+import { IsNotEmpty, IsOptional } from 'class-validator';
+import { User } from 'src/entities/users/entities/user.entity';
 
 export class CreateListDto {
-    id:number;
+  id: number;
 
-    @IsNotEmpty({message: "Name cannot be empty"})
-    name:string;
-    
-    @IsOptional()
-    description?:string;
+  @IsNotEmpty({ message: 'Name cannot be empty' })
+  name: string;
 
+  @IsOptional()
+  description?: string;
 }
