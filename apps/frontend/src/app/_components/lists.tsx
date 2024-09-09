@@ -18,7 +18,7 @@ import {
 import DeleteList from "./deletelist";
 import EditList from "./editlist";
 import ListForm from "../addlist/_components/listForm";
-
+import axios from "axios";
 interface List {
   name: string;
   description: string;
@@ -26,6 +26,12 @@ interface List {
 }
 
 const Lists: React.FC = () => {
+  const user = JSON.parse(localStorage.getItem("user")!);
+  const axiosClient = axios.create({
+    baseURL: "http://localhost:3000/lists/",
+    timeout: 1000,
+    headers: { Authorization: `Bearer ${user.access_token}` },
+  });
   const [lists, setLists] = useState<List[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
@@ -60,33 +66,12 @@ const Lists: React.FC = () => {
   };
 
   const handleDeleteConfirm = async () => {
-    console.log("JD");
     if (listToDelete !== null) {
       try {
-        const user = localStorage.getItem("user");
-        if (user) {
-          const parsedUser = JSON.parse(user);
-          const token = parsedUser.access_token;
-
-          const response = await fetch(
-            `http://localhost:3000/lists/${listToDelete}`,
-            {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          );
-
-          if (response.ok) {
-            setLists((prev) => prev.filter((list) => list.id !== listToDelete));
-            setListToDelete(null);
-            setDeleteDialogOpen(false);
-          } else {
-            console.error("Failed to delete the list");
-          }
-        }
+        await axiosClient.delete(`${listToDelete}`);
+        setLists((prev) => prev.filter((list) => list.id !== listToDelete));
+        setListToDelete(null);
+        setDeleteDialogOpen(false);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -101,37 +86,14 @@ const Lists: React.FC = () => {
   const handleEditConfirm = async (name: string, description: string) => {
     if (listToEdit) {
       try {
-        const user = localStorage.getItem("user");
-        if (user) {
-          const parsedUser = JSON.parse(user);
-          const token = parsedUser.access_token;
-
-          const response = await fetch(
-            `http://localhost:3000/lists/${listToEdit.id}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({ name, description }),
-            },
-          );
-
-          if (response.ok) {
-            setLists((prev) =>
-              prev.map((list) =>
-                list.id === listToEdit.id
-                  ? { ...list, name, description }
-                  : list,
-              ),
-            );
-            setListToEdit(null);
-            setEditDialogOpen(false);
-          } else {
-            console.error("Failed to update the list");
-          }
-        }
+        await axiosClient.patch(`${listToEdit.id}`, { name, description });
+        setLists((prev) =>
+          prev.map((list) =>
+            list.id === listToEdit.id ? { ...list, name, description } : list,
+          ),
+        );
+        setListToEdit(null);
+        setEditDialogOpen(false);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -150,31 +112,8 @@ const Lists: React.FC = () => {
   useEffect(() => {
     const fetchLists = async () => {
       try {
-        let user = localStorage.getItem("user");
-        if (!user) {
-          return;
-        }
-
-        const parsedUser = JSON.parse(user);
-        const token = parsedUser.access_token;
-
-        const response = await fetch(
-          `http://localhost:3000/lists/${parsedUser.id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch lists");
-        }
-
-        const data = await response.json();
-        setLists(data);
+        const response = await axiosClient.get(`${user.id}`);
+        setLists(response.data);
       } catch (error) {
         console.error(error);
       } finally {

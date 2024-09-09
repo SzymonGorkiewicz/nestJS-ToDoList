@@ -24,6 +24,7 @@ import {
   DescriptionBox,
   TitleBox,
 } from "./styles";
+import axios from "axios";
 
 interface List {
   id: number;
@@ -39,7 +40,12 @@ interface Task {
 }
 
 export default function ListViewForm() {
-  const API_URL = "http://localhost:3000/";
+  const token = JSON.parse(localStorage.getItem("user")!).access_token;
+  const axiosClient = axios.create({
+    baseURL: "http://localhost:3000/",
+    timeout: 1000,
+    headers: { Authorization: `Bearer ${token}` },
+  });
   const params = useParams();
   const router = useRouter();
   const [openDialog, setOpen] = useState(false);
@@ -65,23 +71,12 @@ export default function ListViewForm() {
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user")!);
-    console.log(user);
     const fetchListDetails = async (listID: number) => {
       try {
-        const response = await fetch(`${API_URL}lists/get/${listID}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.access_token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch task");
-        }
-        const listData = await response.json();
-        setListDetails(listData);
+        const response = await axiosClient.get(`lists/get/${listID}`);
+        setListDetails(response.data);
       } catch (error) {
-        console.error(error);
+        throw new Error(`${error}`);
       }
     };
     fetchListDetails(listID);
@@ -90,28 +85,12 @@ export default function ListViewForm() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("user")!);
-        const response = await fetch(`${API_URL}tasks/${listID}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.access_token}`,
-          },
-        });
-
-        if (!response.ok) {
-          const errorResponse = await response.json();
-          console.log(errorResponse.message);
-          return;
-        }
-        const result = await response.json();
-        setAllTask(result);
+        const response = await axiosClient.get(`tasks/${listID}`);
+        setAllTask(response.data);
       } catch (error) {
-        console.error(error);
-        setErrorMessage(["failed to fetch tasks"]);
+        setErrorMessage([`${error}`]); // tu poprawic moze zeby to nie byla lista
       }
     };
-
     fetchTasks();
   }, [formData.list, refreshKey]);
 
@@ -120,24 +99,7 @@ export default function ListViewForm() {
     setErrorMessage(null);
 
     try {
-      console.log(formData);
-      const user = JSON.parse(localStorage.getItem("user")!);
-      const response = await fetch(`${API_URL}tasks/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access_token}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        setErrorMessage(errorResponse.message);
-        return;
-      }
-      const result = await response.json();
-      console.log(result);
+      await axiosClient.post(`tasks/create`, formData);
       setOpen(false);
       if (listDetails) {
         setFormData({
@@ -148,8 +110,7 @@ export default function ListViewForm() {
       }
       setRefreshKey((prevKey) => prevKey + 1);
     } catch (error) {
-      console.error(error);
-      setErrorMessage(["failed to submit"]);
+      setErrorMessage([`Failed to create task`]);
     }
   };
 
@@ -167,31 +128,13 @@ export default function ListViewForm() {
   };
 
   const handleCheckBoxChange = async (checked: boolean, taskID: number) => {
-    console.log(checked);
-    console.log(taskID);
-    const user = JSON.parse(localStorage.getItem("user")!);
-
     const updatedCheckbox = {
       completed: checked,
       list: listID,
     };
 
-    console.log(updatedCheckbox);
     try {
-      const response = await fetch(`${API_URL}tasks/${taskID}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access_token}`,
-        },
-        body: JSON.stringify(updatedCheckbox),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
-      const result = await response.json();
-      console.log(result);
+      await axiosClient.patch(`tasks/${taskID}`, updatedCheckbox);
       setAllTask((prevTasks) =>
         prevTasks!.map((task) =>
           task.id === taskID ? { ...task, completed: checked } : task,

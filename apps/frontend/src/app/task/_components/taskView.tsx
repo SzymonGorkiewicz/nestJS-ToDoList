@@ -22,7 +22,7 @@ import {
   StyledEditButton,
   StyledDeleteButton,
 } from "@/app/_components/styles/listsStyles";
-
+import axios from "axios";
 interface List {
   id: number;
 }
@@ -35,32 +35,26 @@ interface Task {
 }
 
 export default function TaskView() {
+  const token = JSON.parse(localStorage.getItem("user")!).access_token;
+  const axiosClient = axios.create({
+    baseURL: "http://localhost:3000/",
+    timeout: 1000,
+    headers: { Authorization: `Bearer ${token}` },
+  });
   const [task, setTask] = useState<Task | null>(null);
   const params = useParams();
   const { push } = useRouter();
-  const API_URL = "http://localhost:3000/tasks";
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [editedTask, setEditedTask] = useState<Task | null>(null);
   const taskId = parseInt(params.taskid as string, 10);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user")!);
     const fetchTask = async (taskId: number) => {
-      console.log(taskId);
       try {
-        const response = await fetch(`${API_URL}/get/${taskId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.access_token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch task");
-        }
-        const taskData = await response.json();
-        setTask(taskData);
-        setEditedTask(taskData);
+        const response = await axiosClient.get(`tasks/get/${taskId}`);
+        setTask(response.data);
+        setEditedTask(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -69,23 +63,10 @@ export default function TaskView() {
   }, []);
 
   const deleteTask = async (taskId: number) => {
-    const user = JSON.parse(localStorage.getItem("user")!);
     try {
-      const response = await fetch(`${API_URL}/${taskId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access_token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete task");
-      }
+      await axiosClient.delete(`tasks/${taskId}`);
       setOpenDeleteDialog(false);
-      console.log("Task deleted successfully");
       if (task) {
-        console.log(task);
         push(`/list/${task.list.id}`);
       }
     } catch (error) {
@@ -94,8 +75,6 @@ export default function TaskView() {
   };
 
   const editTask = async (task: Task) => {
-    const user = JSON.parse(localStorage.getItem("user")!);
-
     const updatedTask = {
       title: task.title,
       description: task.description,
@@ -103,21 +82,9 @@ export default function TaskView() {
     };
 
     try {
-      const response = await fetch(`${API_URL}/${taskId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access_token}`,
-        },
-        body: JSON.stringify(updatedTask),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
+      await axiosClient.patch(`tasks/${taskId}`, updatedTask);
       setOpenEditDialog(false);
       setTask(task);
-      console.log("Task updated successfully");
     } catch (error) {
       console.error(error);
     }
