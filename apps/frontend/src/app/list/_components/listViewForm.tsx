@@ -80,6 +80,7 @@ export default function ListViewForm() {
       }
     };
     fetchListDetails(listID);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -92,6 +93,7 @@ export default function ListViewForm() {
       }
     };
     fetchTasks();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.list, refreshKey]);
 
   const SubmitTaskCreation = async (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable react/no-unescaped-entities */
+
 
 import React, { useEffect, useRef, useState } from "react";
 import { Typography, Container, Box } from "@mui/material";
@@ -122,6 +122,7 @@ const Lists: React.FC = () => {
     };
 
     fetchLists();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, seed]);
 
   if (loading) {

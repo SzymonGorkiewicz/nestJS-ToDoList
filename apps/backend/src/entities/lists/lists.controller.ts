@@ -8,7 +8,6 @@ import {
   Delete,
   UsePipes,
   ValidationPipe,
-  Query,
   UseGuards,
   Req,
 } from '@nestjs/common';

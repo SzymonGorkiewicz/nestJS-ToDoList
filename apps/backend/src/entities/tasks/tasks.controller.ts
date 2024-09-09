@@ -8,10 +8,8 @@ import {
   Delete,
   UsePipes,
   ValidationPipe,
-  Query,
   UseGuards,
   Req,
-  BadRequestException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
