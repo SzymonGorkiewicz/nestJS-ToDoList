@@ -8,13 +8,19 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { AddIconStyled, IconBox } from "./styling";
+import axios from "axios";
 
 interface ListFormProps {
   onListCreated: () => void;
 }
 
 export default function ListForm({ onListCreated }: ListFormProps) {
-  const API_URL = "http://localhost:3000/lists/create";
+  const token = JSON.parse(localStorage.getItem("user")!).access_token;
+  const axiosClient = axios.create({
+    baseURL: "http://localhost:3000/lists/create",
+    timeout: 1000,
+    headers: { Authorization: `Bearer ${token}` },
+  });
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -27,33 +33,20 @@ export default function ListForm({ onListCreated }: ListFormProps) {
     setErrorMessage(null);
 
     try {
-      const user = localStorage.getItem("user");
-      const parsedUser = user ? JSON.parse(user) : null;
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${parsedUser.access_token}`,
-        },
-        body: JSON.stringify(formData),
+      await axiosClient.post("", formData);
+      onListCreated();
+      setOpen(false);
+      setFormData({
+        name: "",
+        description: "",
       });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        setErrorMessage(errorResponse.message || "An error occurred");
-      } else {
-        const result = await response.json();
-        console.log("Response from server:", result);
-        onListCreated();
-        setOpen(false);
-        setFormData({
-          name: "",
-          description: "",
-        });
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(
+          error.response?.data.message ||
+            "Failed to submit the form. Please try again.",
+        );
       }
-    } catch (error) {
-      console.error("Error during form submission:", error);
-      setErrorMessage("Failed to submit the form. Please try again.");
     }
   };
 

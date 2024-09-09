@@ -13,9 +13,13 @@ import {
   StyledLink,
   StyledErrors,
 } from "./styling";
+import axios from "axios";
 
 export default function LoginForm() {
-  const API_URL = "http://localhost:3000/auth/login";
+  const axiosClient = axios.create({
+    baseURL: "http://localhost:3000/auth/login",
+    timeout: 1000,
+  });
   const { push } = useRouter();
   const [formData, setFormData] = useState({
     username: "",
@@ -29,27 +33,13 @@ export default function LoginForm() {
     setErrorMessage(null);
 
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        setErrorMessage(errorResponse.message || "An error occurred");
-      } else {
-        const result = await response.json();
-        console.log("Response from server:", result); // Debugging
-
-        localStorage.setItem("user", JSON.stringify(result));
-        push("/");
+      const response = await axiosClient.post("", formData);
+      localStorage.setItem("user", JSON.stringify(response.data));
+      push("/");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(error.response?.data.message);
       }
-    } catch (error) {
-      console.error("Error during form submission:", error);
-      setErrorMessage("Failed to submit the form. Please try again.");
     }
   };
 

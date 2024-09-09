@@ -13,9 +13,13 @@ import {
   StyledTextField,
   StyledTypography,
 } from "@/app/login/_components/styling";
+import axios from "axios";
 
 export default function RegisterForm() {
-  const API_URL = "http://localhost:3000/auth/register";
+  const axiosClient = axios.create({
+    baseURL: "http://localhost:3000/auth/register",
+    timeout: 1000,
+  });
   const { push } = useRouter();
   const [formData, setFormData] = useState({
     username: "",
@@ -31,26 +35,11 @@ export default function RegisterForm() {
     setErrorMessage(null);
 
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        console.log(errorResponse);
-        setErrorMessage(errorResponse.message || ["An error occurred"]);
-      } else {
-        const result = await response.json();
-        console.log("Response from server:", result); // Debugging
-        push("/login");
-      }
-    } catch (error) {
-      console.error("Error during form submission:", error);
-      setErrorMessage(["Failed to submit the form. Please try again."]);
+      await axiosClient.post("", formData);
+      push("/login");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error))
+        setErrorMessage(error.response?.data.message);
     }
   };
 
