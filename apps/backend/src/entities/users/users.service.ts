@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -23,18 +22,5 @@ export class UsersService {
     throw new Error(
       'Invalid parameter type. Must be a string (username) or number (id).',
     );
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    await this.userRepository.update({ id }, updateUserDto);
-    return user;
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.userRepository.delete(id);
   }
 }
