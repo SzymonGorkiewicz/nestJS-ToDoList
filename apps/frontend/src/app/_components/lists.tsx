@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useEffect, useRef, useState } from "react";
 import { Typography, Container, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -122,7 +121,7 @@ const Lists: React.FC = () => {
     };
 
     fetchLists();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, seed]);
 
   if (loading) {

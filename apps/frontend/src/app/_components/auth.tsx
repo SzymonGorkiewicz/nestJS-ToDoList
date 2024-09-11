@@ -56,7 +56,6 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
     }
 
     const handleDialogClose = () => {
-      localStorage.removeItem("user");
       setOpenDialog(false);
       router.push("/login");
     };
