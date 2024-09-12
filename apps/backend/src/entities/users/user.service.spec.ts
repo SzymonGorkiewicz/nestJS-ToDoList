@@ -29,6 +29,7 @@ describe('UsersService', () => {
             findOneBy: jest.fn(),
           },
         },
+        
       ],
     }).compile();
 
